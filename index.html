@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0b3d2e">
+<title>Álbum Copa 2026 — minhas figurinhas</title>
+<style>
+:root{
+ --bg:#eef1f4; --bg2:#e6eaef; --card:#ffffff; --ink:#15212b; --muted:#67767f; --line:#e1e7ec;
+ --brand:#0b7a43; --brand-d:#0b3d2e; --gold:#e3b23c; --accent:#1f6feb;
+ --falta:#fde7e7; --falta-ink:#c0362c; --tenho:#d6f0d8; --tenho-ink:#1c7a35; --rep:#ffeeb0; --rep-ink:#8a6300;
+ --r:16px; --r-sm:11px; --sh:0 2px 10px rgba(13,30,40,.07); --sh2:0 8px 30px rgba(13,30,40,.14);
+ --safe: env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#0d1318; --bg2:#0a0f13; --card:#161f26; --ink:#e8eef2; --muted:#9aabb5; --line:#243038;
+ --falta:#34201f; --falta-ink:#ff938a; --tenho:#16331f; --tenho-ink:#7ddd93; --rep:#352b12; --rep-ink:#f3cf73;
+ --sh:0 2px 10px rgba(0,0,0,.4); --sh2:0 10px 30px rgba(0,0,0,.55);}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+ background:var(--bg); color:var(--ink); line-height:1.45; overscroll-behavior-y:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* header */
+header{background:linear-gradient(135deg,var(--brand),var(--brand-d)); color:#fff;
+ padding:calc(14px + env(safe-area-inset-top,0px)) 16px 16px; border-radius:0 0 22px 22px; box-shadow:var(--sh2)}
+.htop{display:flex; align-items:center; gap:10px; margin-bottom:14px}
+.htop .logo{font-size:1.5rem}
+.htop h1{margin:0; font-size:1.05rem; font-weight:700; letter-spacing:.2px; flex:1}
+.iconbtn{border:0; background:rgba(255,255,255,.16); color:#fff; width:38px; height:38px; border-radius:12px; font-size:1rem; cursor:pointer; display:grid; place-items:center}
+.iconbtn:active{transform:scale(.92)}
+.ring{display:flex; align-items:center; gap:14px}
+.ring svg{width:74px; height:74px; flex:none}
+.ring .rt{font-size:.82rem; opacity:.92}
+.ring .rt b{display:block; font-size:1.35rem; font-weight:800; line-height:1.1}
+.ring .rt span{font-variant-numeric:tabular-nums}
+.menu{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px}
+.menu button{flex:1 1 auto; border:0; background:rgba(255,255,255,.14); color:#fff; padding:9px 8px; border-radius:11px; font:inherit; font-size:.78rem; font-weight:600; cursor:pointer}
+.menu button:active{transform:scale(.97)}
+
+/* tabs */
+nav.tabs{position:sticky; top:0; z-index:18; display:flex; gap:6px; overflow-x:auto; padding:10px 12px;
+ background:color-mix(in srgb,var(--bg) 86%, transparent); backdrop-filter:blur(8px); scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none; border:0; background:var(--card); color:var(--muted); padding:9px 15px; border-radius:999px;
+ font:inherit; font-size:.85rem; font-weight:600; cursor:pointer; box-shadow:var(--sh); transition:all .15s}
+nav.tabs button.active{background:var(--brand); color:#fff; box-shadow:var(--sh2)}
+
+main{padding:4px 12px 90px; max-width:1180px; margin:0 auto}
+.search{width:100%; padding:13px 15px; font:inherit; border:1px solid var(--line); border-radius:13px;
+ background:var(--card); color:var(--ink); box-shadow:var(--sh); margin:8px 0 12px}
+.search:focus{outline:2px solid var(--brand); border-color:transparent}
+.hint{font-size:.79rem; color:var(--muted); margin:2px 2px 14px; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.tag{display:inline-block; padding:2px 8px; border-radius:7px; font-weight:700; font-size:.72rem}
+.tag.f{background:var(--falta); color:var(--falta-ink)} .tag.t{background:var(--tenho); color:var(--tenho-ink)} .tag.r{background:var(--rep); color:var(--rep-ink)}
+
+/* team */
+.team{background:var(--card); border-radius:var(--r); margin-bottom:12px; overflow:hidden; box-shadow:var(--sh)}
+.team>summary{list-style:none; cursor:pointer; padding:13px 15px; display:flex; align-items:center; gap:12px; position:relative}
+.team>summary::-webkit-details-marker{display:none}
+.team>summary::before{content:""; position:absolute; inset-inline-start:0; top:0; bottom:0; width:5px; background:var(--cf,#999)}
+.team .flag{font-size:1.7rem; line-height:1}
+.team .tname{flex:1; font-weight:700}
+.team .tname small{display:block; color:var(--muted); font-weight:500; font-size:.74rem; margin-top:1px}
+.team .tprog{text-align:end; font-size:.72rem; color:var(--muted)}
+.team .tprog b{display:block; font-size:1rem; color:var(--ink); font-variant-numeric:tabular-nums}
+.team .chev{transition:transform .2s; color:var(--muted)}
+.team[open] .chev{transform:rotate(90deg)}
+.chips{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; padding:2px 13px 14px}
+.chip{position:relative; border-radius:var(--r-sm); padding:10px 10px 10px 32px; min-height:46px; display:flex; align-items:center;
+ background:var(--falta); color:var(--falta-ink); cursor:pointer; user-select:none; font-weight:600; transition:transform .08s}
+.chip:active{transform:scale(.95)}
+.chip .num{position:absolute; inset-inline-start:9px; top:50%; transform:translateY(-50%); font-size:.7rem; font-weight:800; opacity:.6}
+.chip .pn{font-size:.84rem; line-height:1.18}
+.chip.t1{background:var(--tenho); color:var(--tenho-ink)}
+.chip.t2{background:var(--rep); color:var(--rep-ink)}
+.chip .badge{position:absolute; inset-inline-end:7px; top:7px; font-size:.66rem; font-weight:800; background:var(--rep-ink); color:#fff; border-radius:9px; padding:1px 6px}
+.chip.t0 .badge,.chip.t1 .badge{display:none}
+
+/* cards / legends / update / resumo */
+.card{background:var(--card); border-radius:var(--r); padding:15px; box-shadow:var(--sh); margin-bottom:12px}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:9px}
+.legrow{display:flex; align-items:center; gap:9px; padding:10px 0; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.legrow:last-child{border-bottom:0}
+.legrow .who{flex:1; min-width:140px; font-weight:700; font-size:.92rem}
+.legrow .who small{display:block; color:var(--muted); font-weight:500}
+.cor{border:0; border-radius:10px; padding:9px 12px; cursor:pointer; color:#fff; font:inherit; font-size:.74rem; font-weight:800; position:relative; min-width:62px; transition:transform .08s}
+.cor:active{transform:scale(.93)}
+.cor.roxa{background:#7b3ff2} .cor.bronze{background:#a9713f} .cor.prata{background:#9aa0a6} .cor.ouro{background:#d9a521}
+.cor.off{opacity:.3}
+.cor .b{position:absolute; inset-inline-end:-5px; top:-7px; background:#111; border-radius:9px; padding:0 5px; font-size:.62rem}
+.updrow{display:grid; grid-template-columns:38px 1fr auto; gap:10px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line)}
+.updrow:last-child{border-bottom:0}
+.updrow .n{font-weight:800; color:var(--muted); text-align:center; font-variant-numeric:tabular-nums}
+.updrow .nm{font-size:.9rem; font-weight:600}
+.updrow .nm small{display:block; color:var(--muted); font-weight:400}
+.updrow .nm.todo{color:var(--muted); font-style:italic; font-weight:400}
+.tog{border:0; border-radius:10px; background:var(--falta); color:var(--falta-ink); padding:9px 14px; cursor:pointer; font:inherit; font-weight:800; min-width:82px; transition:transform .08s}
+.tog:active{transform:scale(.95)}
+.tog.t1{background:var(--tenho); color:var(--tenho-ink)} .tog.t2{background:var(--rep); color:var(--rep-ink)}
+.kpis{display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:11px; margin-bottom:14px}
+.kpi{background:var(--card); border-radius:var(--r); padding:16px; box-shadow:var(--sh)}
+.kpi .v{font-size:1.7rem; font-weight:800; color:var(--brand); line-height:1; font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:.78rem; color:var(--muted); font-weight:600}
+.kpi .l{font-size:.78rem; color:var(--muted); margin-top:4px}
+.kpi .mini{height:8px; background:var(--line); border-radius:6px; overflow:hidden; margin-top:10px}
+.kpi .mini>i{display:block; height:100%; background:linear-gradient(90deg,var(--brand),var(--gold)); border-radius:6px}
+.pbrow{display:flex; align-items:center; gap:10px; padding:7px 0; font-size:.85rem}
+.pbrow .pf{font-size:1.2rem} .pbrow .pn{flex:1.2; font-weight:600} .pbrow .pp{color:var(--muted); min-width:52px; text-align:end; font-variant-numeric:tabular-nums}
+.pbrow .pbar{flex:2; height:9px; background:var(--line); border-radius:6px; overflow:hidden}
+.pbrow .pbar>i{display:block; height:100%; background:linear-gradient(90deg,var(--brand),var(--gold)); border-radius:6px}
+.empty{text-align:center; color:var(--muted); padding:36px 12px}
+
+/* modal */
+.modal{position:fixed; inset:0; background:rgba(8,16,12,.6); display:flex; align-items:flex-end; justify-content:center; z-index:60; padding:0}
+@media(min-width:560px){.modal{align-items:center; padding:18px}}
+.modal .box{background:var(--card); color:var(--ink); border-radius:20px 20px 0 0; padding:20px; width:100%; max-width:600px; max-height:88vh; overflow:auto; box-shadow:var(--sh2)}
+@media(min-width:560px){.modal .box{border-radius:20px}}
+.modal h2{margin:0 0 10px; font-size:1.15rem}
+.modal ol{padding-inline-start:20px; margin:0} .modal li{margin:8px 0; font-size:.92rem}
+.modal code{background:var(--bg); padding:2px 6px; border-radius:6px; font-size:.85em}
+.modal .close{margin-top:16px; width:100%; padding:13px; border:0; border-radius:12px; background:var(--brand); color:#fff; font:inherit; font-weight:700; cursor:pointer}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+ <div class="htop"><span class="logo">⚽</span><h1>Álbum Copa 2026</h1>
+  <button class="iconbtn" id="btnHelp" title="Como publicar">ⓘ</button></div>
+ <div class="ring">
+  <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3.4"/>
+   <path id="ringArc" d="M18 2.5a15.5 15.5 0 1 1 0 31 15.5 15.5 0 0 1 0-31" fill="none" stroke="var(--gold)" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="0 100"/></svg>
+  <div class="rt">Álbum oficial<b id="oPct">0%</b><span id="oTxt">0 de 980 coladas</span></div>
+ </div>
+ <div class="menu">
+  <button id="btnExport">⬇️ Backup</button>
+  <button id="btnImport">⬆️ Restaurar</button>
+  <button id="btnReset">🗑️ Zerar</button>
+  <input id="fileImport" type="file" accept="application/json,.json" hidden>
+ </div>
+</header>
+<nav class="tabs" id="tabs">
+ <button data-tab="album" class="active">Álbum</button>
+ <button data-tab="rep">Repetidas</button>
+ <button data-tab="esp">Especiais</button>
+ <button data-tab="leg">Legends</button>
+ <button data-tab="upd">Update Set</button>
+ <button data-tab="sum">Resumo</button>
+</nav>
+<main>
+ <section id="tab-album">
+  <input class="search" id="busca" placeholder="🔎 Buscar jogador ou seleção…" autocomplete="off">
+  <p class="hint">Toque para marcar: <span class="tag f">falta</span><span class="tag t">tenho</span><span class="tag r">repetida</span> · segure (ou botão direito) para zerar.</p>
+  <div id="teams"></div>
+ </section>
+ <section id="tab-rep" hidden></section>
+ <section id="tab-esp" hidden></section>
+ <section id="tab-leg" hidden></section>
+ <section id="tab-upd" hidden></section>
+ <section id="tab-sum" hidden></section>
+</main>
+<div class="modal" id="help" hidden><div class="box">
+ <h2>\U0001F4E1 Publicar e atualizar (GitHub Pages)</h2>
+ <ol>
+  <li><b>Publicar:</b> suba a pasta no GitHub, vá em <b>Settings → Pages</b>, escolha branch <code>main</code> / <code>root</code> e salve. Em ~1 min o link <code>seu-usuario.github.io/album-copa-2026</code> abre o app.</li>
+  <li><b>Atualizar nomes:</b> edite o arquivo <code>dados.js</code> (ex.: descomente uma linha do Update Set), depois rode <code>git add .</code> → <code>git commit -m "atualiza"</code> → <code>git push</code>. O site atualiza sozinho.</li>
+  <li><b>Suas marcações</b> ficam salvas neste navegador. Para passar de um aparelho a outro, use <b>Backup</b> / <b>Restaurar</b>.</li>
+ </ol>
+ <button class="close" id="helpClose">Entendi</button>
+</div></div>
+<script src="dados.js"></script>
+<script>
+const D = window.DADOS || {selecoes:[],nomes:{},extra:[],updateSet:{}};
+const KEY="copa2026_v2", CORES=["roxa","bronze","prata","ouro"];
+const ALBUM_TOTAL=D.selecoes.length*20, ESP_TOTAL=20, LEG_TOTAL=80, UPD_TOTAL=120, OFICIAL=ALBUM_TOTAL+ESP_TOTAL;
+let state=load(), tab="album", pressTimer=null, longed=false;
+function fresh(){return{v:2,album:{},esp:{},leg:{},upd:{}}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&s.album?s:fresh()}catch(e){return fresh()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function $(s,r){return (r||document).querySelector(s)}
+function esc(t){return String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function nameFor(c,pos){if(pos===1)return"Escudo";if(pos===13)return"Foto do time";return (D.nomes[c]&&D.nomes[c][pos])||("Jogador "+pos)}
+function cls(n){return n>=2?"t2":n===1?"t1":"t0"}
+function gc(m,k){return state[m][k]||0}
+function sc(m,k,n){n=Math.max(0,n); if(n===0)delete state[m][k]; else state[m][k]=n; save()}
+function bump(m,k){sc(m,k,gc(m,k)+1)}
+const CFCOLOR={UEFA:"#1f6feb",CONMEBOL:"#e3b23c",CONCACAF:"#7b3ff2",CAF:"#0b7a43",AFC:"#e0533d",OFC:"#19a3a3"};
+
+function aCol(){return Object.keys(state.album).length}
+function eCol(){return Object.keys(state.esp).length}
+function lCol(){return Object.keys(state.leg).length}
+function uCol(){return Object.keys(state.upd).length}
+function repTotal(){let t=0;for(const m of["album","esp","leg","upd"])for(const k in state[m])t+=Math.max(0,state[m][k]-1);return t}
+function updHeader(){const c=aCol()+eCol(), p=Math.round(c/OFICIAL*100);
+ $("#oPct").textContent=p+"%"; $("#oTxt").textContent=c+" de "+OFICIAL+" coladas"; $("#ringArc").setAttribute("stroke-dasharray",p+" "+(100-p));}
+
+function renderAlbum(){
+ const f=($("#busca").value||"").trim().toLowerCase(), wrap=$("#teams"); wrap.innerHTML=""; let any=false;
+ D.selecoes.forEach(s=>{const items=[];
+  for(let pos=1;pos<=20;pos++){const nm=nameFor(s.c,pos); if(!f||nm.toLowerCase().includes(f)||s.n.toLowerCase().includes(f))items.push({pos,nm});}
+  if(!items.length)return; any=true;
+  let col=0; for(let p=1;p<=20;p++)if(gc("album",s.c+"-"+p)>0)col++;
+  const det=document.createElement("details"); det.className="team"; det.style.setProperty("--cf",CFCOLOR[s.cf]||"#999"); if(f)det.open=true;
+  let ch=""; items.forEach(it=>{const k=s.c+"-"+it.pos,n=gc("album",k);
+   ch+='<div class="chip '+cls(n)+'" data-map="album" data-k="'+k+'"><span class="num">'+it.pos+'</span><span class="pn">'+esc(it.nm)+'</span><span class="badge">x'+(n>1?n-1:'')+'</span></div>';});
+  det.innerHTML='<summary><span class="flag">'+s.f+'</span><span class="tname">'+esc(s.n)+'<small>Grupo '+s.g+' · '+s.cf+'</small></span><span class="tprog"><b>'+col+'/20</b>coladas</span><span class="chev">▸</span></summary><div class="chips">'+ch+'</div>';
+  wrap.appendChild(det);});
+ if(!any)wrap.innerHTML='<p class="empty">Nada encontrado. 🔍</p>';
+}
+function renderRep(){let h='<div class="card"><b>Repetidas para trocar:</b> '+repTotal()+'</div>',found=false;
+ D.selecoes.forEach(s=>{const r=[];for(let p=1;p<=20;p++){const n=gc("album",s.c+"-"+p);if(n>=2)r.push(esc(nameFor(s.c,p))+' <b>x'+(n-1)+'</b>');}
+  if(r.length){found=true;h+='<div class="card"><div style="font-weight:700;margin-bottom:5px">'+s.f+' '+esc(s.n)+'</div><div style="font-size:.86rem;color:var(--muted)">'+r.join(' · ')+'</div></div>';}});
+ const lr=[];D.extra.forEach(e=>CORES.forEach(c=>{const n=gc("leg",e.c+"-"+c);if(n>=2)lr.push(esc(e.p)+' ('+c+') x'+(n-1));}));
+ if(lr.length){found=true;h+='<div class="card"><div style="font-weight:700;margin-bottom:5px">⭐ Legends</div><div style="font-size:.86rem;color:var(--muted)">'+lr.join(' · ')+'</div></div>';}
+ if(!found)h+='<p class="empty">Nenhuma repetida ainda. 🍀</p>'; $("#tab-rep").innerHTML=h;
+}
+function renderEsp(){let h='<p class="hint">20 metalizadas: logo Panini (00) + FWC 1 a 19.</p><div class="grid">';
+ for(let i=0;i<20;i++){const k="FWC-"+i,n=gc("esp",k),lab=i===0?"Logo Panini":"FWC "+i;
+  h+='<div class="chip '+cls(n)+'" data-map="esp" data-k="'+k+'"><span class="num">'+(i===0?"00":i)+'</span><span class="pn">'+lab+'</span><span class="badge">x'+(n>1?n-1:'')+'</span></div>';}
+ $("#tab-esp").innerHTML=h+'</div>';
+}
+function renderLeg(){let h='<p class="hint">20 craques · 4 cores: Roxa → Bronze → Prata → Ouro (a mais rara).</p><div class="card">';
+ D.extra.forEach(e=>{h+='<div class="legrow"><div class="who">'+e.f+' '+esc(e.p)+'<small>'+esc(e.sel)+'</small></div>';
+  CORES.forEach(c=>{const n=gc("leg",e.c+"-"+c);h+='<button class="cor '+c+(n>0?'':' off')+'" data-map="leg" data-k="'+e.c+"-"+c+'">'+c[0].toUpperCase()+c.slice(1)+(n>1?'<span class="b">x'+(n-1)+'</span>':'')+'</button>';});
+  h+='</div>';}); $("#tab-leg").innerHTML=h+'</div>';
+}
+function renderUpd(){let filled=Object.keys(D.updateSet||{}).length;
+ let h='<p class="hint">120 figurinhas dos que ficaram de fora (Neymar, Neuer, Cubarsí…). '+(filled?filled+' já cadastrados em dados.js.':'Lista oficial ainda não divulgada — adicione em <b>dados.js</b> quando sair.')+'</p><div class="card">';
+ for(let i=1;i<=120;i++){const n=gc("upd",i),info=(D.updateSet||{})[i];
+  const nm=info?('<span class="nm">'+esc(info.nome)+'<small>'+esc(info.sel||"")+'</small></span>'):'<span class="nm todo">A definir</span>';
+  h+='<div class="updrow"><div class="n">'+i+'</div>'+nm+'<button class="tog '+cls(n)+'" data-map="upd" data-k="'+i+'">'+(n===0?"Falta":n===1?"Tenho":"x"+n)+'</button></div>';}
+ $("#tab-upd").innerHTML=h+'</div>';
+}
+function pct(a,b){return b?Math.round(a/b*100):0}
+function renderSum(){const ac=aCol(),ec=eCol(),lc=lCol(),uc=uCol();
+ let h='<div class="kpis">';
+ [["Álbum",ac,ALBUM_TOTAL],["Especiais",ec,ESP_TOTAL],["Total oficial",ac+ec,OFICIAL],["Extra Legends",lc,LEG_TOTAL],["Update Set",uc,UPD_TOTAL],["Repetidas",repTotal(),null]]
+ .forEach(k=>{h+='<div class="kpi"><div class="v">'+k[1]+(k[2]?'<small> / '+k[2]+'</small>':'')+'</div><div class="l">'+k[0]+'</div>'+(k[2]?'<div class="mini"><i style="width:'+pct(k[1],k[2])+'%"></i></div>':'')+'</div>';});
+ h+='</div><div class="card"><b>Progresso por seleção</b>';
+ D.selecoes.forEach(s=>{let x=0;for(let p=1;p<=20;p++)if(gc("album",s.c+"-"+p)>0)x++;
+  h+='<div class="pbrow"><span class="pf">'+s.f+'</span><span class="pn">'+esc(s.n)+'</span><span class="pbar"><i style="width:'+pct(x,20)+'%"></i></span><span class="pp">'+x+'/20</span></div>';});
+ $("#tab-sum").innerHTML=h+'</div>';
+}
+const RENDER={album:renderAlbum,rep:renderRep,esp:renderEsp,leg:renderLeg,upd:renderUpd,sum:renderSum};
+function show(t){tab=t; document.querySelectorAll('main>section').forEach(s=>s.hidden=true); $("#tab-"+t).hidden=false;
+ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); RENDER[t](); window.scrollTo(0,0);}
+
+function apply(el){const n=gc(el.dataset.map,el.dataset.k);
+ if(el.classList.contains('cor')){const c=el.dataset.k.split('-')[1]; el.className='cor '+c+(n>0?'':' off'); el.innerHTML=c[0].toUpperCase()+c.slice(1)+(n>1?'<span class="b">x'+(n-1)+'</span>':'');return;}
+ if(el.classList.contains('tog')){el.className='tog '+cls(n); el.textContent=(n===0?"Falta":n===1?"Tenho":"x"+n);return;}
+ el.className='chip '+cls(n); const b=$('.badge',el); if(b)b.textContent='x'+(n>1?n-1:'');}
+function onTap(e){const el=e.target.closest('[data-map]'); if(!el)return; if(longed){longed=false;return;}
+ bump(el.dataset.map,el.dataset.k); apply(el); updHeader();}
+function onReset(e){const el=e.target.closest('[data-map]'); if(!el)return; e.preventDefault(); sc(el.dataset.map,el.dataset.k,0); apply(el); updHeader();}
+document.addEventListener('click',onTap);
+document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-map]'))onReset(e);});
+document.addEventListener('touchstart',e=>{const el=e.target.closest('[data-map]'); if(!el)return; longed=false;
+ pressTimer=setTimeout(()=>{longed=true; sc(el.dataset.map,el.dataset.k,0); apply(el); updHeader();},550);},{passive:true});
+document.addEventListener('touchend',()=>clearTimeout(pressTimer));
+document.addEventListener('touchmove',()=>clearTimeout(pressTimer),{passive:true});
+$("#tabs").addEventListener('click',e=>{const b=e.target.closest('button[data-tab]'); if(b)show(b.dataset.tab);});
+$("#busca").addEventListener('input',()=>{if(tab==='album')renderAlbum();});
+$("#btnExport").addEventListener('click',()=>{const b=new Blob([JSON.stringify(state)],{type:"application/json"});
+ const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download="album-copa2026-backup.json"; document.body.appendChild(a); a.click(); a.remove();});
+$("#btnImport").addEventListener('click',()=>$("#fileImport").click());
+$("#fileImport").addEventListener('change',e=>{const fl=e.target.files[0]; if(!fl)return; const r=new FileReader();
+ r.onload=()=>{try{const o=JSON.parse(r.result); if(!o.album)throw 0; state=Object.assign(fresh(),o); save(); show(tab); updHeader(); alert("Backup restaurado! ✅");}catch(x){alert("Arquivo inválido.");}};
+ r.readAsText(fl); e.target.value="";});
+$("#btnReset").addEventListener('click',()=>{if(confirm("Zerar TODAS as marcações? Faça um backup antes.")){state=fresh(); save(); show(tab); updHeader();}});
+$("#btnHelp").addEventListener('click',()=>$("#help").hidden=false);
+$("#helpClose").addEventListener('click',()=>$("#help").hidden=true);
+$("#help").addEventListener('click',e=>{if(e.target.id==='help')$("#help").hidden=true;});
+updHeader(); show("album");
+</script>
+</body>
+</html>
