@@ -1,10 +1,22 @@
 /* ============================================================
-   DADOS DO ÁLBUM — Copa do Mundo 2026
-   ------------------------------------------------------------
-   ESTE é o arquivo que você edita para atualizar o app.
+   dados.js  —  CATALOGO do Album Copa 2026 (nomes e numeros)
+   ============================================================
+
+   >>> COMO MARCAR QUE VOCE JA TEM (colou) UMA FIGURINHA? <<<
+   ISSO NAO E FEITO AQUI. E no APP:
+     - abra o index.html, ache a figurinha e TOQUE nela.
+       vermelho = falta  /  verde = tenho  /  amarelo = repetida.
+     - segure (ou botao direito) para voltar a "falta".
+     - o app salva sozinho no seu navegador. Pronto, nao precisa mais nada.
+   Voce NUNCA precisa editar este arquivo para marcar figurinhas.
+
+   >>> ENTAO PARA QUE SERVE ESTE ARQUIVO (dados.js)? <<<
+   So para o CATALOGO: a lista de nomes, numeros e selecoes.
+   Edite aqui apenas quando quiser:
+     1) corrigir ou escrever o NOME de um jogador (secao "nomes" abaixo), ou
+     2) cadastrar as figurinhas do "Update Set" quando a Panini divulgar.
    Depois de editar:  git add .  &&  git commit -m "atualiza"  &&  git push
-   Em ~1 minuto o site no GitHub Pages já mostra a mudança.
-   (As suas marcações de figurinhas ficam salvas no navegador, não aqui.)
+   (em ~1 min o site no GitHub Pages mostra a mudanca.)
    ============================================================ */
 window.DADOS = {
 
@@ -1051,10 +1063,16 @@ window.DADOS = {
   ],
 
   /* ============================================================
-     UPDATE SET — 120 figurinhas dos jogadores que ficaram de fora.
-     A lista oficial numerada ainda NÃO foi divulgada pela Panini.
-     Quando sair, é só DESCOMENTAR a linha (tirar as // do começo)
-     e preencher nome e seleção. Salve e dê git push. Exemplos:
+     UPDATE SET — os 120 que ficaram de fora (lista oficial ainda nao saiu).
+     Aqui voce CADASTRA o NOME (isto e catalogo; nao e "marcar que tenho").
+     Como cadastrar um numero:
+       1) ache a linha do numero (ex.: a do "1" abaixo);
+       2) APAGUE as duas barras  //  do comeco da linha;
+       3) escreva o nome e a selecao entre aspas.
+     ANTES:   // "1": {nome:"", sel:""},
+     DEPOIS:     "1": {nome:"Neymar Jr", sel:"Brasil"},
+     Salve e de git push. (Marcar que voce TEM a figurinha continua
+     sendo no app, tocando nela.)
      ============================================================ */
   updateSet: {
     // "1": {nome:"Neymar Jr", sel:"Brasil"},
