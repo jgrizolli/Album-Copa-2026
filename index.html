@@ -73,6 +73,22 @@ main{padding:4px 12px 90px;max-width:1180px;margin:0 auto}
 .pbrow{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:.85rem}.pbrow .pf{font-size:1.2rem}.pbrow .pn{flex:1.2;font-weight:600}.pbrow .pp{color:var(--muted);min-width:52px;text-align:end;font-variant-numeric:tabular-nums}
 .pbrow .pbar{flex:2;height:9px;background:var(--line);border-radius:6px;overflow:hidden}.pbrow .pbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--gold))}
 .empty{text-align:center;color:var(--muted);padding:36px 12px}
+.kpi.neon{border:1.6px solid #39ff14;box-shadow:0 0 0 1px rgba(57,255,20,.25),0 0 16px rgba(57,255,20,.35)}
+.kpi.neon .v{color:#22c55e;text-shadow:0 0 9px rgba(57,255,20,.5)}
+.donutwrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.donutwrap svg{width:158px;height:158px;flex:none}
+.dleg{flex:1;min-width:160px}
+.dleg .di{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:.92rem;border-bottom:1px solid var(--line)}
+.dleg .di:last-child{border-bottom:0}
+.dleg .dot{width:13px;height:13px;border-radius:4px;flex:none}
+.dleg .dv{margin-inline-start:auto;font-weight:800;font-variant-numeric:tabular-nums}
+.lockbtn{border:0;background:rgba(255,255,255,.16);color:#fff;width:38px;height:38px;border-radius:12px;font-size:1rem;cursor:pointer;display:grid;place-items:center}
+.lockbtn.on{background:#39ff14;color:#04210a;box-shadow:0 0 12px rgba(57,255,20,.6)}
+.lockbtn:active{transform:scale(.92)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#15212b;color:#fff;padding:11px 16px;border-radius:12px;font-size:.85rem;box-shadow:var(--sh2);z-index:80;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{opacity:.97}
+.lform{display:flex;flex-direction:column;gap:10px;margin:8px 0 2px}
+.lform input{padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink)}
 .modal{position:fixed;inset:0;background:rgba(8,16,12,.6);display:flex;align-items:flex-end;justify-content:center;z-index:60}
 @media(min-width:560px){.modal{align-items:center;padding:18px}}
 .modal .box{background:var(--card);color:var(--ink);border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:600px;max-height:88vh;overflow:auto;box-shadow:var(--sh2)}
@@ -86,6 +102,7 @@ main{padding:4px 12px 90px;max-width:1180px;margin:0 auto}
 <body>
 <header>
  <div class="htop"><span class="logo">⚽</span><h1>Álbum Copa 2026 — família</h1>
+  <button class="lockbtn" id="btnLock" title="Modo edição">🔒</button>
   <button class="iconbtn" id="btnHelp" title="Ajuda">ⓘ</button></div>
  <div class="syncpill" id="syncpill">… conectando</div>
  <div class="ring">
@@ -125,11 +142,23 @@ main{padding:4px 12px 90px;max-width:1180px;margin:0 auto}
  <ol>
   <li><b>É um álbum só, da família.</b> Todo mundo que abre o link vê as <b>mesmas</b> figurinhas. Marcou num aparelho, aparece em todos.</li>
   <li><b>Marcar figurinha:</b> toque nela. Verde = tenho, amarelo = repetida. Segure para zerar.</li>
+  <li><b>Modo edição:</b> toque no <b>🔒</b> e entre com usuário e senha para liberar a marcação. Sem entrar, fica só leitura.</li>
   <li>A barrinha no topo mostra <b>☁️ Sincronizado</b> quando está salvando na nuvem.</li>
   <li><b>Atualizar nomes / Update Set:</b> edite <code>dados.js</code> e dê <code>git push</code>.</li>
  </ol>
  <button class="close" id="helpClose">Entendi</button>
 </div></div>
+<div class="modal" id="login" hidden><div class="box">
+ <h2>🔒 Modo edição</h2>
+ <p style="color:var(--muted);font-size:.88rem;margin:0">Entre para poder marcar figurinhas. Sem entrar, o álbum fica só para visualização.</p>
+ <div class="lform">
+  <input id="luser" placeholder="Usuário" autocomplete="off" autocapitalize="off">
+  <input id="lpass" type="password" placeholder="Senha" autocomplete="off">
+ </div>
+ <button class="close" id="loginOk">Entrar</button>
+ <button class="close" id="loginCancel" style="background:transparent;color:var(--muted);margin-top:4px">Cancelar</button>
+</div></div>
+<div class="toast" id="toast"></div>
 <script src="config.js"></script>
 <script src="dados.js"></script>
 <script type="module">
@@ -141,9 +170,13 @@ const D = window.DADOS || {selecoes:[],nomes:{},extra:[],updateSet:{}};
 const CFG = window.FIREBASE_CONFIG || {};
 const ALBUM = window.ALBUM_ID || "familia";
 const cloudReady = !!(CFG.apiKey && CFG.apiKey !== "COLE_AQUI");
+/* >>> MODO EDICAO: troque o usuario e a senha aqui <<< */
+const EDIT_USER = (window.EDIT_USER || "familia");
+const EDIT_PASS = (window.EDIT_PASS || "copa2026");
 const KEY="copa2026_v2", CORES=["roxa","bronze","prata","ouro"];
 const ALBUM_TOTAL=D.selecoes.length*20, ESP_TOTAL=20, LEG_TOTAL=80, UPD_TOTAL=120, OFICIAL=ALBUM_TOTAL+ESP_TOTAL;
-let state=load(), tab="album", pressTimer=null, longed=false;
+let state=load(), tab="album", pressTimer=null, longed=false, editMode=(localStorage.getItem("copa_edit")==="1"), toastT=null;
+function toast(m){const el=$("#toast");if(!el)return;el.textContent=m;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1900);}
 let auth=null, db=null, cloudRef=null, unsub=null, cloudTimer=null, applyingCloud=false, authReady=false;
 
 function fresh(){return{v:2,album:{},esp:{},leg:{},upd:{}}}
@@ -197,11 +230,21 @@ function renderUpd(){let filled=Object.keys(D.updateSet||{}).length;
   h+='<div class="updrow"><div class="n">'+i+'</div>'+nm+'<button class="tog '+cls(n)+'" data-map="upd" data-k="'+i+'">'+(n===0?"Falta":n===1?"Tenho":"x"+n)+'</button></div>';}
  $("#tab-upd").innerHTML=h+'</div>';}
 function pct(a,b){return b?Math.round(a/b*100):0}
-function renderSum(){const ac=aCol(),ec=eCol(),lc=lCol(),uc=uCol();let h='<div class="kpis">';
- [["Álbum",ac,ALBUM_TOTAL],["Especiais",ec,ESP_TOTAL],["Total oficial",ac+ec,OFICIAL],["Extra Legends",lc,LEG_TOTAL],["Update Set",uc,UPD_TOTAL],["Repetidas",repTotal(),null]]
- .forEach(k=>{h+='<div class="kpi"><div class="v">'+k[1]+(k[2]?'<small> / '+k[2]+'</small>':'')+'</div><div class="l">'+k[0]+'</div>'+(k[2]?'<div class="mini"><i style="width:'+pct(k[1],k[2])+'%"></i></div>':'')+'</div>';});
+function renderSum(){const ac=aCol(),ec=eCol(),lc=lCol(),uc=uCol(),col=ac+ec,rep=repTotal(),p=pct(col,OFICIAL);
+ const donut='<svg viewBox="0 0 36 36" aria-hidden="true">'
+  +'<circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--line)" stroke-width="3.6"/>'
+  +'<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#22c55e" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="'+p+' 100" transform="rotate(-90 18 18)" style="filter:drop-shadow(0 0 3px rgba(57,255,20,.65))"/>'
+  +'<text x="18" y="17.5" text-anchor="middle" dominant-baseline="central" font-size="7" font-weight="800" fill="var(--ink)">'+p+'%</text>'
+  +'<text x="18" y="23.5" text-anchor="middle" font-size="2.7" fill="var(--muted)">concluído</text></svg>';
+ const leg='<div class="dleg">'
+  +'<div class="di"><span class="dot" style="background:#22c55e;box-shadow:0 0 7px rgba(57,255,20,.6)"></span>Coladas<span class="dv">'+col+'</span></div>'
+  +'<div class="di"><span class="dot" style="background:var(--line)"></span>Faltam<span class="dv">'+(OFICIAL-col)+'</span></div>'
+  +'<div class="di"><span class="dot" style="background:#e3b23c"></span>Repetidas<span class="dv">'+rep+'</span></div></div>';
+ let h='<div class="card"><b>Conclusão do álbum (980 oficiais)</b><div class="donutwrap" style="margin-top:12px">'+donut+leg+'</div></div><div class="kpis">';
+ [["Álbum",ac,ALBUM_TOTAL],["Especiais",ec,ESP_TOTAL],["Total oficial",col,OFICIAL],["Extra Legends",lc,LEG_TOTAL],["Update Set",uc,UPD_TOTAL],["Repetidas",rep,null]]
+ .forEach(k=>{h+='<div class="kpi neon"><div class="v">'+k[1]+(k[2]?'<small> / '+k[2]+'</small>':'')+'</div><div class="l">'+k[0]+'</div>'+(k[2]?'<div class="mini"><i style="width:'+pct(k[1],k[2])+'%"></i></div>':'')+'</div>';});
  h+='</div><div class="card"><b>Progresso por seleção</b>';
- D.selecoes.forEach(s=>{let x=0;for(let p=1;p<=20;p++)if(gc("album",s.c+"-"+p)>0)x++;
+ D.selecoes.forEach(s=>{let x=0;for(let p2=1;p2<=20;p2++)if(gc("album",s.c+"-"+p2)>0)x++;
   h+='<div class="pbrow"><span class="pf">'+s.f+'</span><span class="pn">'+esc(s.n)+'</span><span class="pbar"><i style="width:'+pct(x,20)+'%"></i></span><span class="pp">'+x+'/20</span></div>';});
  $("#tab-sum").innerHTML=h+'</div>';}
 const RENDER={album:renderAlbum,rep:renderRep,esp:renderEsp,leg:renderLeg,upd:renderUpd,sum:renderSum};
@@ -212,21 +255,37 @@ function apply(el){const n=gc(el.dataset.map,el.dataset.k);
  if(el.classList.contains('cor')){const c=el.dataset.k.split('-')[1];el.className='cor '+c+(n>0?'':' off');el.innerHTML=c[0].toUpperCase()+c.slice(1)+(n>1?'<span class="b">x'+(n-1)+'</span>':'');return;}
  if(el.classList.contains('tog')){el.className='tog '+cls(n);el.textContent=(n===0?"Falta":n===1?"Tenho":"x"+n);return;}
  el.className='chip '+cls(n);const b=$('.badge',el);if(b)b.textContent='x'+(n>1?n-1:'');}
-function onTap(e){const el=e.target.closest('[data-map]');if(!el)return;if(longed){longed=false;return;}bump(el.dataset.map,el.dataset.k);apply(el);updHeader();}
-function onReset(e){const el=e.target.closest('[data-map]');if(!el)return;e.preventDefault();sc(el.dataset.map,el.dataset.k,0);apply(el);updHeader();}
+function onTap(e){const el=e.target.closest('[data-map]');if(!el)return;if(!editMode){toast("👀 Modo leitura — toque no cadeado 🔒 e entre para editar");return;}if(longed){longed=false;return;}bump(el.dataset.map,el.dataset.k);apply(el);updHeader();}
+function onReset(e){const el=e.target.closest('[data-map]');if(!el)return;if(!editMode)return;e.preventDefault();sc(el.dataset.map,el.dataset.k,0);apply(el);updHeader();}
 document.addEventListener('click',onTap);
 document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-map]'))onReset(e);});
-document.addEventListener('touchstart',e=>{const el=e.target.closest('[data-map]');if(!el)return;longed=false;pressTimer=setTimeout(()=>{longed=true;sc(el.dataset.map,el.dataset.k,0);apply(el);updHeader();},550);},{passive:true});
+document.addEventListener('touchstart',e=>{const el=e.target.closest('[data-map]');if(!el||!editMode)return;longed=false;pressTimer=setTimeout(()=>{longed=true;sc(el.dataset.map,el.dataset.k,0);apply(el);updHeader();},550);},{passive:true});
 document.addEventListener('touchend',()=>clearTimeout(pressTimer));
 document.addEventListener('touchmove',()=>clearTimeout(pressTimer),{passive:true});
 $("#tabs").addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)show(b.dataset.tab);});
 $("#busca").addEventListener('input',()=>{if(tab==='album')renderAlbum();});
 $("#btnExport").addEventListener('click',()=>{const b=new Blob([JSON.stringify(state)],{type:"application/json"});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download="album-copa2026-backup.json";document.body.appendChild(a);a.click();a.remove();});
-$("#btnImport").addEventListener('click',()=>$("#fileImport").click());
+$("#btnImport").addEventListener('click',()=>{if(!editMode){toast("Entre no modo edição 🔒 para restaurar");return;}$("#fileImport").click();});
 $("#fileImport").addEventListener('change',e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();
  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o.album)throw 0;state=Object.assign(fresh(),o);save();show(tab);updHeader();alert("Backup restaurado! ✅");}catch(x){alert("Arquivo inválido.");}};r.readAsText(fl);e.target.value="";});
-$("#btnReset").addEventListener('click',()=>{if(confirm("Zerar o álbum (para todos os aparelhos)? Faça um backup antes.")){state=fresh();save();show(tab);updHeader();}});
+$("#btnReset").addEventListener('click',()=>{if(!editMode){toast("Entre no modo edição 🔒 para zerar");return;}if(confirm("Zerar o álbum (para todos os aparelhos)? Faça um backup antes.")){state=fresh();save();show(tab);updHeader();}});
 $("#btnHelp").addEventListener('click',()=>$("#help").hidden=false);
+
+/* -------- modo edição (cadeado) -------- */
+function setLockUI(){const b=$("#btnLock");if(!b)return;b.textContent=editMode?"🔓":"🔒";b.classList.toggle("on",editMode);b.title=editMode?"Editando — toque para travar":"Somente leitura — toque para editar";}
+$("#btnLock").addEventListener('click',()=>{
+ if(editMode){editMode=false;localStorage.removeItem("copa_edit");setLockUI();toast("🔒 Modo leitura");}
+ else{$("#luser").value="";$("#lpass").value="";$("#login").hidden=false;setTimeout(()=>{try{$("#luser").focus();}catch(e){}},60);}
+});
+function tentarLogin(){
+ if($("#luser").value.trim()===EDIT_USER && $("#lpass").value===EDIT_PASS){
+  editMode=true;localStorage.setItem("copa_edit","1");$("#login").hidden=true;setLockUI();toast("🔓 Modo edição ativado");
+ } else { toast("Usuário ou senha incorretos"); }
+}
+$("#loginOk").addEventListener('click',tentarLogin);
+$("#lpass").addEventListener('keydown',e=>{if(e.key==='Enter')tentarLogin();});
+$("#loginCancel").addEventListener('click',()=>$("#login").hidden=true);
+$("#login").addEventListener('click',e=>{if(e.target.id==='login')$("#login").hidden=true;});
 $("#helpClose").addEventListener('click',()=>$("#help").hidden=true);
 $("#help").addEventListener('click',e=>{if(e.target.id==='help')$("#help").hidden=true;});
 
@@ -253,7 +312,7 @@ if(cloudReady){
   });
  }catch(e){setSync('erro');console.warn("init",e);}
 }
-setSync(cloudReady?'wait':'local'); updHeader(); show("album");
+setLockUI(); setSync(cloudReady?'wait':'local'); updHeader(); show("album");
 </script>
 </body>
 </html>
